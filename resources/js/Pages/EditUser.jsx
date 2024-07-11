@@ -21,7 +21,7 @@ export default function EditUser({ user }) {
         <div className="bg-slate-100 min-h-screen">
             <Navbar />
             <div className="pt-8">
-                <h1 className="flex justify-center items-center font-bold text-3xl">Edit User</h1>
+                <h1 className="flex justify-center items-center font-bold text-3xl">Edit User: {user.name}</h1>
             </div>
             <div className="mt-10 max-w-2xl mx-auto sm:px-6 lg:px-8">
                 <form onSubmit={updateUser}>
