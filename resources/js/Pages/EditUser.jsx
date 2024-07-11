@@ -1,0 +1,69 @@
+import Navbar from '@/Layouts/Navbar';
+import { FaEdit } from "react-icons/fa";
+import { useForm } from "@inertiajs/react";
+
+export default function EditUser({ user }) {
+    const { data, setData, put, errors } = useForm({
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+    }); 
+
+    const updateUser = (e) => {
+        e.preventDefault();
+        put(`/user/${user.id}`, data, {
+            onSuccess: () => {
+            },
+        });
+    };
+
+    return (
+        <div className="bg-slate-100 min-h-screen">
+            <Navbar />
+            <div className="pt-8">
+                <h1 className="flex justify-center items-center font-bold text-3xl">Edit User</h1>
+            </div>
+            <div className="mt-10 max-w-2xl mx-auto sm:px-6 lg:px-8">
+                <form onSubmit={updateUser}>
+                    <div className="flex flex-col gap-4">
+                    <div className="w-full">
+                            <input
+                                type="text"
+                                placeholder="Your Name"
+                                className="border rounded-lg px-3 py-2 bg-white shadow-md border-transparent w-full"
+                                onChange={(e) => setData("name", e.target.value)}
+                                value={data.name}
+                            />
+                        </div>
+                        {errors.name && <p className="text-red-700 text-sm text-left">{errors.name}</p>}
+                        <div className="w-full">
+                            <input
+                                type="email"
+                                placeholder="Email Address"
+                                className="border rounded-lg px-3 py-2 bg-white shadow-md border-transparent w-full"
+                                onChange={(e) => setData("email", e.target.value)}
+                                value={data.email}
+                            />
+                        </div>
+                        {errors.email && <p className="text-red-700 text-sm text-left">{errors.email}</p>}
+                        <div className="w-full">
+                            <input
+                                type="text"
+                                placeholder="Phone Number"
+                                className="border rounded-lg px-3 py-2 bg-white shadow-md border-transparent w-full"
+                                onChange={(e) => setData("phone", e.target.value)}
+                                value={data.phone}
+                            />
+                        </div>
+                        {errors.phone && <p className="text-red-700 text-sm text-left">{errors.phone}</p>}
+                        <div className="flex justify-center">
+                            <button type="submit" className=" flex justify-center px-3 py-2 rounded-lg bg-gray-900 text-white shadow-md max-w-24">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}
