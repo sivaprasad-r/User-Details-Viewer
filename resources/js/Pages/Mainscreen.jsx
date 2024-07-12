@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/Layouts/Navbar';
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { usePage } from "@inertiajs/react";
@@ -5,6 +6,16 @@ import { Inertia } from '@inertiajs/inertia';
 
 export default function Mainscreen() {
     const { users } = usePage().props;
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredUsers, setFilteredUsers] = useState(users);
+
+    useEffect(() => {
+        const results = users.filter(user => 
+            user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredUsers(results);
+    }, [searchTerm, users]);
 
     const handleDelete = (userId) => {
         if (confirm('Are you sure you want to delete this user?')) {
@@ -19,6 +30,15 @@ export default function Mainscreen() {
                 <h1 className="flex justify-center items-center font-bold text-3xl">Users</h1>
             </div>
             <div className="container mx-auto py-8">
+                <div className="flex justify-center mb-8">
+                    <input
+                        type="text"
+                        placeholder="Search by name or email"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="px-3 py-2 bg-white shadow-md border-gray-300 border rounded-lg w-2/3"
+                    />
+                </div>
                 <div className="overflow-x-auto">
                     <table className="min-w-full bg-white border border-gray-300 border-separate rounded-lg shadow-md">
                         <thead>
@@ -31,7 +51,7 @@ export default function Mainscreen() {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => (
+                            {filteredUsers.map(user => (
                                 <tr key={user.id}>
                                     <td className="py-2 px-4 border">{user.id}</td>
                                     <td className="py-2 px-4 border">{user.name}</td>
